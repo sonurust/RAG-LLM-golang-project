@@ -20,7 +20,7 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 	if err := app.Run(ctx, config.Load()); err != nil {
-		fmt.Println(os.Stderr, err)
+		fmt.Fprintln(os.Stderr, err)
 		panic(err)
 	}
 }

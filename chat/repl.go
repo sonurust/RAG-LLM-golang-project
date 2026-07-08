@@ -54,15 +54,17 @@ func RunREPL(ctx context.Context, client *llm.Client, opts Options) error {
 		var stopOnce sync.Once
 		reply, err := client.ChatStream(ctx, history, func(s string) {
 			stopOnce.Do(spin.Stop)
+			fmt.Print(s)
 		})
 		stopOnce.Do(spin.Stop)
 		fmt.Println()
 
 		if err != nil {
-			fmt.Println(os.Stderr, "error: ", err)
+			fmt.Fprintln(os.Stderr, "error:", err)
 			history = history[:len(history)-1] // Remove the last user message on error
 			continue
 		}
+
 		history = append(history, reply)
 	}
 }
