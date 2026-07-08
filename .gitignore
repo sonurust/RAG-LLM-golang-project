@@ -1,0 +1,31 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go specific
+/bin/
+/pkg/
+*.test
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Environment
+.env
+
+# Logs
+*.log
+
+# IDE metadata
+*.iml
+.idea/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
