@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 	"time"
@@ -112,6 +113,11 @@ func seedHistory(systemPromptFile string) ([]llm.Message, error) {
 	if systemPromptFile == "" {
 		return nil, nil
 	}
+
+	if err := ensureSystemPromptFile(systemPromptFile); err != nil {
+		return nil, fmt.Errorf("prepare system prompt: %w", err)
+	}
+
 	data, err := os.ReadFile(systemPromptFile)
 	if errors.Is(err, fs.ErrNotExist) {
 		return nil, nil
@@ -129,4 +135,20 @@ func seedHistory(systemPromptFile string) ([]llm.Message, error) {
 			Content: content,
 		},
 	}, nil
+}
+
+func ensureSystemPromptFile(path string) error {
+	if path == "" {
+		return nil
+	}
+
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		return err
+	}
+
+	file, err := os.OpenFile(path, os.O_CREATE|os.O_RDONLY, 0o644)
+	if err != nil {
+		return err
+	}
+	return file.Close()
 }
