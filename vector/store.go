@@ -6,7 +6,7 @@ type Document struct {
 	ID        string
 	Content   string
 	Metadata  map[string]string
-	Embedding []float64
+	Embedding []float32
 }
 
 type Result struct {
@@ -16,7 +16,7 @@ type Result struct {
 
 type Store interface {
 	Upsert(ctx context.Context, docs []Document) error
-	Query(ctx context.Context, embedding []float64, topK int) ([]Result, error)
+	Query(ctx context.Context, embedding []float32, topK int) ([]Result, error)
 	Delete(ctx context.Context, ids []string) error
 	DeleteBySource(ctx context.Context, source string) error
 	Close() error
